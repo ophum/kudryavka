@@ -1,0 +1,7 @@
+
+
+type Gate interface {
+	Chack()
+}
+
+
