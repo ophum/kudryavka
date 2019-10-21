@@ -1,3 +1,4 @@
+![kudryavka](./waf.jpg)
 # kudryavka - わふー
 
 ## run
