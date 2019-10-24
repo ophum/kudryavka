@@ -1,53 +1,29 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"net/http/httputil"
-	"net/url"
-	"strings"
+	"github.com/ophum/kudryavka/waf/gate"
 
-	"github.com/ophum/waf/input"
-	"github.com/ophum/waf/output"
+	"github.com/ophum/kudryavka/waf/gate/dynamic"
 )
 
-func AAA(req *http.Request) error {
-
-	return nil
-}
 func main() {
-	in := input.NewInput()
-	out := output.NewOutput()
-	director := func(req *http.Request) {
-		req.URL.Scheme = "http"
-		body := req.Body
-		err := AAA(req)
-		if err != nil {
-
-		}
-		in.Check(req)
-		fmt.Println("=====BODY=====")
-		fmt.Println(body)
-
-		origin, _ := url.Parse("http://localhost:8081")
-		req.URL.Host = origin.Host
+	//kudryavka := waf.NewWaf()
+	//kudryavka.Serve()
+	gates := gate.NewGates()
+	dgate, err := dynamic.NewDynamicGate("./hello.so")
+	if err != nil {
+		return
+	}
+	dgate2, err := dynamic.NewDynamicGate("./gostruct.so")
+	if err != nil {
+		return
 	}
 
-	modres := func(res *http.Response) error {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(res.Body)
-		body := buf.String()
-		fmt.Println("=====RESPONSE BODY=====")
-		fmt.Println(body)
-		out.Check(res)
-		res.Body = ioutil.NopCloser(strings.NewReader(body))
-		return nil
+	gates.Append("helli", dgate)
+	gates.Append("gostruct", dgate2)
+	req := gate.CheckList{
+		Method: "GET",
 	}
 
-	proxy := &httputil.ReverseProxy{Director: director, ModifyResponse: modres}
-
-	fmt.Println("Server running...")
-	http.ListenAndServe(":8000", proxy)
+	gates.CheckAll(req)
 }
