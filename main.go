@@ -30,7 +30,7 @@ func main() {
 	gates.Append("xss", dgate2)
 
 	for i:=0; i<len(pattern); i++ {
-		fmt.Printf("\n=========\npattern : %s\n",pattern[i])
+		fmt.Printf("\n=========\nbody pattern : %s\n",pattern[i])
 		req := gate.CheckList{
 			Method: "GET",
 			Body: pattern[i],
