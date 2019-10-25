@@ -15,7 +15,7 @@ type CheckList struct {
 	ProtoMinor int
 
 	//Header http.Header
-	//Body             io.ReadCloser
+	Body	string
 	ContentLength int64
 	//TransferEncoding []string
 	Host string

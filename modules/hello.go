@@ -11,9 +11,8 @@ import (
 //export check
 func check(args unsafe.Pointer) {
 	req := (*gate.CheckList)(args)
-	fmt.Println(req)
+	fmt.Println(req.Method)
 }
 
 func main() {
-
 }
