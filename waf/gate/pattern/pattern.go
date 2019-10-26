@@ -13,8 +13,15 @@ type PatternGate struct {
 	pattern []*Pattern
 }
 
-func NewPatternGate() *PatternGate {
-	return &PatternGate{}
+func NewPatternGate(path string) *PatternGate {
+	return &PatternGate{
+		path:    path,
+		pattern: []*Pattern{},
+	}
+}
+
+func (p *PatternGate) AppendFromFile() {
+
 }
 
 func (p *PatternGate) Check(list gate.CheckList) error {
