@@ -2,6 +2,7 @@ package waf
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -47,6 +48,9 @@ func (w *Waf) Serve() {
 		body := buf.String()
 		fmt.Println("=====RESPONSE BODY=====")
 		fmt.Println(body)
+		b, _ := json.Marshal(res)
+		fmt.Println("json")
+		fmt.Println(string(b))
 		r := gate.CheckList{}
 		err := w.output.CheckAll(r)
 		if err != nil {

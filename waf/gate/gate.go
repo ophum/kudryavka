@@ -1,6 +1,9 @@
 package gate
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
 
 type Gate interface {
 	Check(CheckList) error
@@ -46,7 +49,11 @@ func (g *Gates) Append(name string, gate Gate) {
 func (g *Gates) CheckAll(list CheckList) error {
 	for name, f := range g.gates {
 		log.Printf("Checing %s...\n", name)
-		f.Check(list)
+		err := f.Check(list)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
 	}
 	return nil
 }
